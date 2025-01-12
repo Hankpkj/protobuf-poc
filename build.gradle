@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+    // Kotlin 사용 시, 추가로
+    id 'org.jetbrains.kotlin.jvm' version '1.9.0'
+    
+    // Protobuf 플러그인 (com.google.protobuf) 버전
+    id "com.google.protobuf" version "0.9.4"
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // 프로토버퍼 Java 런타임 라이브러리
+    implementation "com.google.protobuf:protobuf-java:3.22.0"
+
+    // (옵션) Kotlin만 쓰는 건 아니지만, Kotlin 프로젝트라면
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+}
+
+// com.google.protobuf 플러그인 설정
+protobuf {
+    protoc {
+        // protoc 컴파일러 버전 지정
+        // (mavenCentral에서 가져와 gradle 캐시에 저장)
+        artifact = "com.google.protobuf:protoc:3.22.0"
+    }
+
+    // 결과물(Java 소스)이 생성될 기본 디렉터리 지정
+    // (없으면 기본값은 build/generated/source/proto/...)
+    generatedFilesBaseDir = "$projectDir/src/generated-java"
+
+}
