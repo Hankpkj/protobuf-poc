@@ -5,10 +5,13 @@
     "scripts": {
       "build:ts": "bash build-ts.sh",
       "build:java": "./gradlew build",
-      "build:all": "npm run build:ts && npm run build:java"
+      "clean:java": "./gradlew clean",
+      "run:java": "./gradlew bootRun",
+      "build:all": "npm run clean:java && npm run build:java && npm run build:ts",
+      "postinstall": "mkdir -p proto/google/api proto/google/protobuf && curl -o proto/google/api/annotations.proto https://raw.githubusercontent.com/googleapis/googleapis/master/google/api/annotations.proto && curl -o proto/google/api/http.proto https://raw.githubusercontent.com/googleapis/googleapis/master/google/api/http.proto && curl -o proto/google/protobuf/descriptor.proto https://raw.githubusercontent.com/protocolbuffers/protobuf/main/src/google/protobuf/descriptor.proto && curl -o proto/google/protobuf/timestamp.proto https://raw.githubusercontent.com/protocolbuffers/protobuf/main/src/google/protobuf/timestamp.proto"
     },
     "devDependencies": {
-      "ts-proto": "^1.124.0",
+      "ts-proto": "^1.165.1",
       "protobufjs": "^7.2.0"
     }
   }

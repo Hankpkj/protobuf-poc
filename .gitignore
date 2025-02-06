@@ -1,4 +1,41 @@
-/node_modules
-/.gradle
-/.vscode
-/build/reports
+# Build outputs
+build/
+out/
+dist/
+
+# Gradle
+.gradle/
+gradle-app.setting
+!gradle-wrapper.jar
+!gradle-wrapper.properties
+.gradletasknamecache
+
+# Node
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# IDE - IntelliJ
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# IDE - VSCode
+.vscode/
+*.code-workspace
+.history/
+
+# IDE - Eclipse
+.classpath
+.project
+.settings/
+bin/
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Proto generated files from Google APIs
+proto/google/

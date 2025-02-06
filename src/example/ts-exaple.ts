@@ -3,7 +3,7 @@ import {
   LoginRequest,
   LoginResponse,
   type LoginRequest as LoginRequestSchema,
-} from "../generated-js/messages";
+} from "../generated-js/login";
 
 // 혹은 npm 패키지로 publish 했다면
 // import { LoginRequest, LoginResponse } from '@myorg/protos';
@@ -36,16 +36,13 @@ async function callLoginApi() {
 
   // 4) 응답(JSON)을 받아서 -> LoginResponse 형태로 변환
   const responseData = await response.json();
-  // responseData = { userId: 'some-id', success: true, message: 'Welcome!' }
 
   // 5) fromJSON으로 프로토버퍼 메시지에 매핑
   const loginResp = LoginResponse.fromJSON(responseData);
 
   if (loginResp.success) {
-    console.log("Login success, user:", loginResp.userId);
+    console.log("Login success, user:", loginResp.success.user);
   } else {
-    console.log("Login fail:", loginResp.message);
+    console.log("Login fail:", loginResp.error?.message);
   }
 }
-
-//  gRPC-like 바이너리 전송 예시

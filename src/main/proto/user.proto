@@ -1,0 +1,100 @@
+syntax = "proto3";
+
+// Google의 타임스탬프를 사용하기 위해 import 필요
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+
+package com.example.protos;  // 패키지명 변경
+
+option java_package = "com.example.protos";
+option java_multiple_files = true;
+
+// 사용자 정보를 저장하는 메시지
+message User {
+  string id = 1;
+  string name = 2;
+  bool is_active = 3;               // 불리언 타입
+  repeated string tags = 4;         // 문자열 리스트 (배열)
+  optional string email = 5;        // 선택적 필드 (proto3에서 optional 키워드 사용)
+  repeated Contact contacts = 6;
+  google.protobuf.Timestamp created_at = 7;         // 타임스탬프 타입 (Google의 Well-Known Type)
+  google.protobuf.Timestamp updated_at = 8;         // 타임스탬프 타입 (Google의 Well-Known Type)
+
+  message Address {
+    string city = 1;
+    string country = 2;
+  }
+  Address address = 9;              // 중첩된 메시지 타입
+  map<string, string> metadata = 10; // key-value 맵 타입 {키: 값} - 딕셔너리 형태
+}
+
+message Contact {
+  string id = 1;
+  string phone = 2;
+  string address = 3;
+}
+
+service UserService {
+  rpc GetUser (GetUserRequest) returns (GetUserResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/users/{id}"
+    };
+  }
+
+  rpc CreateUser (CreateUserRequest) returns (CreateUserResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/users"
+      body: "*"
+    };
+  }
+
+  rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse) {
+    option (google.api.http) = {
+      put: "/api/v1/users/{id}"
+      body: "*"
+    };
+  }
+
+  rpc DeleteUser (DeleteUserRequest) returns (DeleteUserResponse) {
+    option (google.api.http) = {
+      delete: "/api/v1/users/{id}"
+    };
+  }
+}
+
+message GetUserRequest {
+  string id = 1;
+}
+
+message GetUserResponse {
+  User user = 1;
+}
+
+message CreateUserRequest {
+  string name = 1;
+  string email = 2;
+  repeated Contact contacts = 3;
+}
+
+message CreateUserResponse {
+  User user = 1;
+}
+
+message UpdateUserRequest {
+  string id = 1;
+  string name = 2;
+  string email = 3;
+  repeated Contact contacts = 4;
+}
+
+message UpdateUserResponse {
+  User user = 1;
+}
+
+message DeleteUserRequest {
+  string id = 1;
+}
+
+message DeleteUserResponse {
+  bool success = 1;
+}
